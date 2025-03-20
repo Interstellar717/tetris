@@ -946,37 +946,47 @@ window.addEventListener('keydown', e => {
 
     var dirs = Object.keys(b.states);
 
+    if (loop) {
+        if (e.key == "ArrowUp") {
+            executed = b.rotate(dirs[(dirs.indexOf(b.state) + 1) % dirs.length]);
 
-    if (e.key == "ArrowUp") {
-        executed = b.rotate(dirs[(dirs.indexOf(b.state) + 1) % dirs.length]);
+        } else if (e.key == "ArrowLeft" && b.x - n >= 0) {
+            b.x -= n;
+            executed = true;
+            setTimeout(() => {
+                if (b.speed == 0) {
+                    b.x += n /* * 2 */;
+                    b.speed = 1
+                }
+                executed = false;
+            }, 100);
+        } else if (e.key == "ArrowRight" && b.x + b.w + n <= Math.floor(canvas.width / n) * n) {
 
-    } else if (e.key == "ArrowLeft" && b.x - n >= 0) {
-        b.x -= n;
-        executed = true;
-        setTimeout(() => {
-            if (b.speed == 0) {
-                b.x += n /* * 2 */;
-                b.speed = 1
-            }
-            executed = false;
-        }, 100);
-    } else if (e.key == "ArrowRight" && b.x + b.w + n <= Math.floor(canvas.width / n) * n) {
+            b.x += n;
+            executed = true;
 
-        b.x += n;
-        executed = true;
+            setTimeout(() => {
+                if (b.speed == 0) {
+                    b.x -= n /* * 2 */;
+                    b.speed = 1
+                }
+                executed = false;
+            }, 100);
+        } else if (e.key == "ArrowDown") {
+            blocks[blocks.length - 1].speed = 80
+        } else if (e.key == "c") {
+            hold();
+            executed = true;
+        }
+    }
 
-        setTimeout(() => {
-            if (b.speed == 0) {
-                b.x -= n /* * 2 */;
-                b.speed = 1
-            }
-            executed = false;
-        }, 100);
-    } else if (e.key == "ArrowDown") {
-        blocks[blocks.length - 1].speed = 20
-    } else if (e.key == "c") {
-        hold();
-        executed = true;
+    if (e.key == "Escape") {
+        if (loop) {
+            loop = false;
+        } else {
+            loop = true;
+            gameLoop();
+        }
     }
 
     ["ArrowLeft", "ArrowRight", /* "ArrowDown", */ "ArrowUp", "C"].includes(e.key) && started && executed && shadow_set(b);
@@ -1005,6 +1015,9 @@ qs('canvas').addEventListener("click", function () {
 function reset() {
     started = false;
     loop = true;
+    rules = true;
+    score = 0;
+    held = undefined;
     gameLoop();
     blocks.push(new Block(0, Math.floor(canvas.height / n) * n, "floor"));
     blocks.push(new Block(0, 0, "square", "N", 0, {}));
