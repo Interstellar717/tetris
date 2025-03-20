@@ -1,0 +1,45 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    transition: 0.75s all;
+    overflow: hidden;
+}
+
+#canvas {
+    width: min-content;
+    height: calc(100%
+            /*  - 10px */
+        );
+    /* padding-bottom: 10px; */
+    border: solid black 1px;
+    /* margin: 10px; */
+    border-left: solid white 1px;
+    border-right: solid white 1px;
+    background-color: black;
+}
+
+div:has(#canvas) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 50%;
+    margin: auto;
+    /* margin-left: 230px; */
+}
+
+button {
+    /* margin-left: 370px; */
+    position: absolute;
+    top: 260px;
+    right: 130px;
+}
+
+#score {
+    /* margin-left: 370px; */
+    position: absolute;
+    top: 300px;
+    right: 130px;
+}
